@@ -28,27 +28,30 @@ interface HomeProps {
   postsPagination: PostPagination;
 }
 
-export default function Home({ results }) {
+export default function Home({ postsPagination }: HomeProps) {
   //   // TODO
   console.log('aca');
-  console.log(results);
-  // console.log(results.length);
+  console.log(postsPagination);
+  // console.log(postsPagination.length);
 
   return (
     <>
       <main className={styles.container}>
         <Header />
 
-        {results.map(post => (
-          <a className={styles.post}>
-            <h1>{post.title}</h1>
-            <p>{post.subtitle}</p>
+        {postsPagination.results.map(post => (
+          <a className={styles.post} key={post.uid}>
+            <h1>{post.data.title}</h1>
+            <p>{post.data.subtitle}</p>
             <div>
               <time className={styles.date}>
-                <FiCalendar /> {post.createdAt}
+                <FiCalendar />{' '}
+                {new Date(post.first_publication_date).toLocaleDateString(
+                  'pt-BR'
+                )}
               </time>
               <span className={styles.author}>
-                <FiUser /> {post.author}
+                <FiUser /> {post.data.author}
               </span>
             </div>
           </a>
@@ -63,29 +66,14 @@ export default function Home({ results }) {
 export const getStaticProps = async () => {
   // TODO
   const prismic = getPrismicClient();
-  const postsResponse = await prismic.query(
+  const postsPagination = await prismic.query(
     [Prismic.predicates.at('document.type', 'publication')],
     {
       pageSize: 100,
     }
   );
 
-  // console.log(JSON.stringify(postsResponse, null, 2));
-
-  const results = postsResponse.results.map(post => {
-    return {
-      slug: post.uid,
-      title: post.data.title,
-      subtitle: post.data.subtitle,
-      author: post.data.author,
-      createdAt: post.first_publication_date,
-    };
-  });
-
-  console.log('resultado');
-  console.log(results);
-
   return {
-    props: { results },
+    props: { postsPagination },
   };
 };

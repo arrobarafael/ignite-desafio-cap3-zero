@@ -13,6 +13,8 @@
       line-height: 2.12rem;
       font-weight: 700;
       color: var(--heading);
+
+      transition: 0.2s color;
     }
 
     p {
@@ -36,9 +38,14 @@
         }
       }
     }
+
+    &:hover h1 {
+      color: var(--yellow-500);
+    }
   }
 
   button {
+    cursor: pointer;
     background: none;
     border: none;
     color: var(--hightlights);
@@ -46,5 +53,10 @@
     font-size: 1.13rem;
 
     margin-top: 4rem;
+    transition: 0.2s filter;
+
+    &:hover {
+      filter: brightness(80%);
+    }
   }
 }
