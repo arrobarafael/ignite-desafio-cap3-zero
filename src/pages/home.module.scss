@@ -1,1 +1,50 @@
 // TODO
+.container {
+  width: 900px;
+  margin: 5rem auto;
+
+  .post {
+    margin-top: 2rem;
+    display: block;
+    cursor: pointer;
+
+    h1 {
+      font-size: 1.75rem;
+      line-height: 2.12rem;
+      font-weight: 700;
+      color: var(--heading);
+    }
+
+    p {
+      font-size: 1.13rem;
+      line-height: 1.36rem;
+      margin: 0.5rem 0;
+      font-weight: 400;
+    }
+
+    div {
+      margin-top: 1rem;
+
+      time,
+      span {
+        font-size: 0.875rem;
+        font-weight: 400;
+        color: var(--info);
+
+        & + span {
+          margin-left: 1.5rem;
+        }
+      }
+    }
+  }
+
+  button {
+    background: none;
+    border: none;
+    color: var(--hightlights);
+    font-weight: 600;
+    font-size: 1.13rem;
+
+    margin-top: 4rem;
+  }
+}
