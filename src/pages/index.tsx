@@ -3,6 +3,7 @@ import { GetStaticProps } from 'next';
 import { getPrismicClient } from '../services/prismic';
 import Prismic from '@prismicio/client';
 import { FiCalendar, FiUser } from 'react-icons/fi';
+import Link from 'next/link';
 
 import Header from '../components/Header';
 
@@ -65,18 +66,20 @@ export default function Home({ postsPagination }: HomeProps) {
         <Header />
 
         {results.map(post => (
-          <a className={styles.post} key={post.uid}>
-            <h1>{post.data.title}</h1>
-            <p>{post.data.subtitle}</p>
-            <div>
-              <time className={styles.date}>
-                <FiCalendar /> {post.first_publication_date}
-              </time>
-              <span className={styles.author}>
-                <FiUser /> {post.data.author}
-              </span>
-            </div>
-          </a>
+          <Link href={`/post/${post.uid}`}>
+            <a className={styles.post} key={post.uid}>
+              <h1>{post.data.title}</h1>
+              <p>{post.data.subtitle}</p>
+              <div>
+                <time className={styles.date}>
+                  <FiCalendar /> {post.first_publication_date}
+                </time>
+                <span className={styles.author}>
+                  <FiUser /> {post.data.author}
+                </span>
+              </div>
+            </a>
+          </Link>
         ))}
 
         {nextPage && <button onClick={nextPost}>Carregar mais posts</button>}

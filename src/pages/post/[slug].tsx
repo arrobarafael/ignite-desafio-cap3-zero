@@ -26,9 +26,10 @@ interface PostProps {
   post: Post;
 }
 
-// export default function Post() {
-//   // TODO
-// }
+export default function Post() {
+  // TODO
+  return 'chegou';
+}
 
 // export const getStaticPaths = async () => {
 //   const prismic = getPrismicClient();
