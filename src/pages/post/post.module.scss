@@ -1,1 +1,46 @@
 // TODO
+.headerContainer {
+  width: 900px;
+  margin: 2.63rem auto;
+}
+
+.mainContainer {
+  width: 900px;
+  margin: 0 auto;
+
+  h1 {
+    font-size: 3rem;
+    line-height: 3.63rem;
+    font-weight: 700;
+    color: var(--heading);
+  }
+
+  .postDetails {
+    font-weight: 400;
+    font-size: 1rem;
+    color: var(--info);
+
+    display: flex;
+    gap: 1.5rem;
+
+    margin-top: 1.5rem;
+
+    span,
+    time {
+      display: flex;
+      gap: 10.5px;
+    }
+  }
+
+  .heading {
+    font-weight: 700;
+    font-size: 1.75rem;
+    margin-top: 4.13rem;
+  }
+
+  .body {
+    margin-top: 3rem;
+
+    font-size: 1.3rem;
+  }
+}
