@@ -39,24 +39,24 @@ export default function Home({ postsPagination }: HomeProps) {
     const response = await fetch(
       'https://desafio3.cdn.prismic.io/api/v2/documents/search?ref=YLfJ5hAAACUAh77q&q=%5B%5Bat%28document.type%2C+%22publication%22%29%5D%5D&page=2&pageSize=1'
     ).then(promise => promise.json());
-    console.log('seta');
-    console.log(response);
-    // setPostList([
-    //   ...postList,
-    //   {
-    //     next_page: response.next_page,
-    //     results: {
-    //       fist_publication_date: new Date(
-    //         response.results[0].first_publication_date
-    //       ).toLocaleDateString('pt-BR'),
-    //       data: {
-    //         title: response.results[0].data.title,
-    //         subtitle: response.results[0].data.subtitle,
-    //         author: response.results[0].data.author,
-    //       },
-    //     },
-    //   },
-    // ]);
+
+    setNextPage(response.next_page);
+
+    const newResults = response.results.map(post => {
+      return {
+        uid: post.uid,
+        fist_publication_date: new Date(
+          post.first_publication_date
+        ).toLocaleDateString('pt-BR'),
+        data: {
+          title: post.data.title,
+          subtitle: post.data.subtitle,
+          author: post.data.author,
+        },
+      };
+    });
+
+    setResults([...results, ...newResults]);
   };
 
   return (
@@ -66,15 +66,11 @@ export default function Home({ postsPagination }: HomeProps) {
 
         {results.map(post => (
           <a className={styles.post} key={post.uid}>
-            {post.uid}
             <h1>{post.data.title}</h1>
             <p>{post.data.subtitle}</p>
             <div>
               <time className={styles.date}>
-                <FiCalendar />{' '}
-                {new Date(post.first_publication_date).toLocaleDateString(
-                  'pt-BR'
-                )}
+                <FiCalendar /> {post.first_publication_date}
               </time>
               <span className={styles.author}>
                 <FiUser /> {post.data.author}
@@ -102,7 +98,7 @@ export const getStaticProps = async () => {
   const results = response.results.map(post => {
     return {
       uid: post.uid,
-      fist_publication_date: new Date(
+      first_publication_date: new Date(
         post.first_publication_date
       ).toLocaleDateString('pt-BR'),
       data: {
