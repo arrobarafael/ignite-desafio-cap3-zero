@@ -31,9 +31,8 @@ interface HomeProps {
 
 export default function Home({ postsPagination }: HomeProps) {
   //   // TODO
-  const [postList, setPostList] = useState(postsPagination);
-  console.log(postList);
-  console.log(postList.results);
+  const [results, setResults] = useState(postsPagination.results);
+  const [nextPage, setNextPage] = useState(postsPagination.next_page);
 
   const nextPost = async () => {
     const prismic = getPrismicClient();
@@ -58,7 +57,6 @@ export default function Home({ postsPagination }: HomeProps) {
     //     },
     //   },
     // ]);
-    console.log(postList);
   };
 
   return (
@@ -66,7 +64,7 @@ export default function Home({ postsPagination }: HomeProps) {
       <main className={styles.container}>
         <Header />
 
-        {postList.results.map(post => (
+        {results.map(post => (
           <a className={styles.post} key={post.uid}>
             {post.uid}
             <h1>{post.data.title}</h1>
@@ -85,9 +83,7 @@ export default function Home({ postsPagination }: HomeProps) {
           </a>
         ))}
 
-        {postList.next_page && (
-          <button onClick={nextPost}>Carregar mais posts</button>
-        )}
+        {nextPage && <button onClick={nextPost}>Carregar mais posts</button>}
       </main>
     </>
   );
