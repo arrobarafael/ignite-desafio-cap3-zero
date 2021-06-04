@@ -1,5 +1,6 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
 import { RichText } from 'prismic-dom';
+import { useEffect, useState } from 'react';
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
 
 import Header from '../../components/Header';
@@ -31,7 +32,20 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps) {
+  const [timeReading, setTimeReading] = useState(0);
   // TODO
+
+  useEffect(() => {
+    function calcTimeReading() {
+      const numberOfWords = document.body.innerText.split(' ').length;
+      const expexctedTime = Math.round(numberOfWords / 200);
+
+      return expexctedTime;
+    }
+
+    setTimeReading(calcTimeReading());
+  }, []);
+
   return (
     <>
       <section className={styles.headerContainer}>
@@ -54,7 +68,8 @@ export default function Post({ post }: PostProps) {
             {post.data.author}
           </span>
           <time>
-            <FiClock />4 min
+            <FiClock />
+            {timeReading} min
           </time>
         </div>
         {post.data.content.map(content => {
@@ -63,7 +78,7 @@ export default function Post({ post }: PostProps) {
               <div className={styles.heading}>{content.heading}</div>
               <div
                 className={styles.body}
-                dangerouslySetInnerHTML={{ __html: content.body }}
+                dangerouslySetInnerHTML={{ __html: String(content.body) }}
               ></div>
             </div>
           );
