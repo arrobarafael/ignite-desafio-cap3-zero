@@ -4,6 +4,13 @@
   margin: 2.63rem auto;
 }
 
+.imageContainer {
+  img {
+    min-width: 100%;
+  }
+  margin-bottom: 6rem;
+}
+
 .mainContainer {
   width: 900px;
   margin: 0 auto;
@@ -34,13 +41,18 @@
 
   .heading {
     font-weight: 700;
-    font-size: 1.75rem;
+    font-size: 2rem;
     margin-top: 4.13rem;
   }
 
   .body {
     margin-top: 3rem;
-
     font-size: 1.3rem;
+
+    line-height: 2rem;
+
+    p {
+      margin-bottom: 2rem;
+    }
   }
 }
