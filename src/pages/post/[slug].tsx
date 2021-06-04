@@ -3,6 +3,7 @@ import { useRouter } from 'next/router';
 import { RichText } from 'prismic-dom';
 import { useEffect, useState } from 'react';
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
+import Prismic from '@prismicio/client';
 
 import Header from '../../components/Header';
 
@@ -95,12 +96,23 @@ export default function Post({ post }: PostProps) {
 }
 
 export const getStaticPaths = async () => {
-  //   const prismic = getPrismicClient();
-  //   const posts = await prismic.query(TODO);
+  const prismic = getPrismicClient();
+  const posts = await prismic.query(
+    [Prismic.predicates.at('document.type', 'publication')],
+    {
+      pageSize: 1,
+    }
+  );
 
   //   // TODO
   return {
-    paths: [],
+    paths: [
+      {
+        params: {
+          slug: posts.results[0].uid,
+        },
+      },
+    ],
     fallback: true,
   };
 };
