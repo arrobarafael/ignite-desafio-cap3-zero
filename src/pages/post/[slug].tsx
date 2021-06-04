@@ -1,4 +1,5 @@
 import { GetStaticPaths, GetStaticProps } from 'next';
+import { useRouter } from 'next/router';
 import { RichText } from 'prismic-dom';
 import { useEffect, useState } from 'react';
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
@@ -32,6 +33,7 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps) {
+  const router = useRouter();
   const [timeReading, setTimeReading] = useState(0);
   // TODO
 
@@ -45,6 +47,10 @@ export default function Post({ post }: PostProps) {
 
     setTimeReading(calcTimeReading());
   }, []);
+
+  if (router.isFallback) {
+    return <div>Carregando...</div>;
+  }
 
   return (
     <>
@@ -95,7 +101,7 @@ export const getStaticPaths = async () => {
   //   // TODO
   return {
     paths: [],
-    fallback: 'blocking',
+    fallback: true,
   };
 };
 
