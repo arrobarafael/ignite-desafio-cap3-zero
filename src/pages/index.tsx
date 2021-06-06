@@ -4,6 +4,8 @@ import { getPrismicClient } from '../services/prismic';
 import Prismic from '@prismicio/client';
 import { FiCalendar, FiUser } from 'react-icons/fi';
 import Link from 'next/link';
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 
 import Header from '../components/Header';
 
@@ -46,9 +48,7 @@ export default function Home({ postsPagination }: HomeProps) {
     const newResults = response.results.map(post => {
       return {
         uid: post.uid,
-        fist_publication_date: new Date(
-          post.first_publication_date
-        ).toLocaleDateString('pt-BR'),
+        first_publication_date: post.first_publication_date,
         data: {
           title: post.data.title,
           subtitle: post.data.subtitle,
@@ -66,13 +66,20 @@ export default function Home({ postsPagination }: HomeProps) {
         <Header />
 
         {results.map(post => (
-          <Link href={`/post/${post.uid}`}>
-            <a className={styles.post} key={post.uid}>
+          <Link href={`/post/${post.uid}`} key={post.uid}>
+            <a className={styles.post}>
               <h1>{post.data.title}</h1>
               <p>{post.data.subtitle}</p>
               <div>
                 <time className={styles.date}>
-                  <FiCalendar /> {post.first_publication_date}
+                  <FiCalendar />
+                  {format(
+                    new Date(post.first_publication_date),
+                    'dd MMM yyyy',
+                    {
+                      locale: ptBR,
+                    }
+                  )}
                 </time>
                 <span className={styles.author}>
                   <FiUser /> {post.data.author}
@@ -101,9 +108,7 @@ export const getStaticProps = async () => {
   const results = response.results.map(post => {
     return {
       uid: post.uid,
-      first_publication_date: new Date(
-        post.first_publication_date
-      ).toLocaleDateString('pt-BR'),
+      first_publication_date: post.first_publication_date,
       data: {
         title: post.data.title,
         subtitle: post.data.subtitle,

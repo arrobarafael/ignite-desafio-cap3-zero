@@ -4,6 +4,8 @@ import { RichText } from 'prismic-dom';
 import { useEffect, useState } from 'react';
 import { FiCalendar, FiUser, FiClock } from 'react-icons/fi';
 import Prismic from '@prismicio/client';
+import { format } from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
 
 import Header from '../../components/Header';
 
@@ -40,10 +42,14 @@ export default function Post({ post }: PostProps) {
 
   useEffect(() => {
     function calcTimeReading() {
-      const numberOfWords = document.body.innerText.split(' ').length;
-      const expexctedTime = Math.round(numberOfWords / 200);
+      if (document.body.innerText) {
+        const numberOfWords = document.body.innerText.split(' ').length;
+        const expexctedTime = Math.round(numberOfWords / 200);
 
-      return expexctedTime;
+        return expexctedTime;
+      }
+
+      return 0;
     }
 
     setTimeReading(calcTimeReading());
@@ -68,7 +74,9 @@ export default function Post({ post }: PostProps) {
         <div className={styles.postDetails}>
           <time>
             <FiCalendar />
-            {post.first_publication_date}
+            {format(new Date(post.first_publication_date), 'dd MMM yyyy', {
+              locale: ptBR,
+            })}
           </time>
           <span>
             <FiUser />
@@ -125,6 +133,7 @@ export const getStaticProps = async ({ params }) => {
   // TODO;
   const content = response.data.content.map(item => {
     const body = RichText.asHtml(item.body);
+
     return {
       heading: item.heading,
       body,
@@ -134,13 +143,7 @@ export const getStaticProps = async ({ params }) => {
   const body = RichText.asHtml(response.data.content[0].body);
 
   const post = {
-    first_publication_date: new Date(
-      response.first_publication_date
-    ).toLocaleString('pt-BR', {
-      day: '2-digit',
-      month: '2-digit',
-      year: 'numeric',
-    }),
+    first_publication_date: response.first_publication_date,
     data: {
       title: response.data.title,
       banner: {
