@@ -37,7 +37,7 @@ interface PostProps {
 
 export default function Post({ post }: PostProps) {
   const router = useRouter();
-  const [timeReading, setTimeReading] = useState(0);
+  const [timeReading, setTimeReading] = useState('0 min');
   // TODO
 
   useEffect(() => {
@@ -46,10 +46,10 @@ export default function Post({ post }: PostProps) {
         const numberOfWords = document.body.innerText.split(' ').length;
         const expexctedTime = Math.round(numberOfWords / 200);
 
-        return expexctedTime;
+        return expexctedTime + ' min';
       }
 
-      return 0;
+      return '0 min';
     }
 
     setTimeReading(calcTimeReading());
@@ -84,7 +84,7 @@ export default function Post({ post }: PostProps) {
           </span>
           <time>
             <FiClock />
-            {timeReading} min
+            {timeReading}
           </time>
         </div>
         {post.data.content.map(content => {
@@ -103,7 +103,7 @@ export default function Post({ post }: PostProps) {
   );
 }
 
-export const getStaticPaths = async () => {
+export const getStaticPaths = async (oq, ta) => {
   const prismic = getPrismicClient();
   const posts = await prismic.query(
     [Prismic.predicates.at('document.type', 'publication')],
@@ -147,7 +147,7 @@ export const getStaticProps = async ({ params }) => {
     data: {
       title: response.data.title,
       banner: {
-        url: response.data.image.url,
+        url: response.data.banner.url,
       },
       author: response.data.author,
       content,
